@@ -3,6 +3,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const Role = require('./models/Role');
+const fs = require('fs');
+const path = require('path');
+const { marked } = require('marked');
 
 // Load environment variables
 dotenv.config();
@@ -19,34 +22,74 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// Welcome route
+
 app.get('/', (req, res) => {
-  res.send(`
-    <h1>Welcome to the VRV Security RBAC System!</h1>
-    <p>This is a role-based access control system for managing users, roles, and permissions.</p>
-    <h2>Available Routes:</h2>
-    <ul>
-      <li><strong>Authentication</strong>
-        <ul>
-          <li>POST <code>/api/auth/register</code> - Register a new user</li>
-          <li>POST <code>/api/auth/login</code> - Log in with email and password</li>
-          <li>POST <code>/api/auth/logout</code> - Log out (requires JWT)</li>
-        </ul>
-      </li>
-      <li><strong>User</strong>
-        <ul>
-          <li>GET <code>/api/users/profile</code> - Fetch user profile (requires JWT)</li>
-          <li>PUT <code>/api/users/profile</code> - Update user profile (requires JWT)</li>
-        </ul>
-      </li>
-      <li><strong>Admin</strong>
-        <ul>
-          <li>GET <code>/api/users</code> - Fetch all users (Admin only, requires JWT)</li>
-        </ul>
-      </li>
-    </ul>
-    <p>To get started, use any of the above routes with a tool like <a href="https://www.postman.com/" target="_blank">Postman</a>.</p>
-  `);
+  // Read the README.md file
+  fs.readFile(path.join(__dirname, 'README.md'), 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).send('Error reading README.md file');
+    }
+
+    // Convert the Markdown content to HTML
+    const htmlContent = marked(data);
+
+    // Send the converted HTML as the response
+    res.send(`
+      <html>
+        <head>
+          <title>Welcome to the VRV Security RBAC System</title>
+          <style>
+            /* Basic styling for the page */
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 0;
+              background-color: #f4f4f4;
+            }
+            h1 {
+              color: #2c3e50;
+              font-size: 2.5em;
+              margin-top: 20px;
+              text-align: center;
+            }
+            h2 {
+              color: #34495e;
+              font-size: 2em;
+              margin-top: 20px;
+            }
+            h3 {
+              color: #16a085;
+              font-size: 1.5em;
+            }
+            h4 {
+              color: #1abc9c;
+              font-size: 1.2em;
+            }
+            /* Styling for the Markdown content */
+            div {
+              max-width: 800px;
+              margin: 20px auto;
+              padding: 20px;
+              background-color: white;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            /* Style links within Markdown content */
+            a {
+              color: #2980b9;
+              text-decoration: none;
+            }
+            a:hover {
+              text-decoration: underline;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Welcome to the VRV Security RBAC System!</h1>
+          <div>${htmlContent}</div>
+        </body>
+      </html>
+    `);
+  });
 });
 
 
