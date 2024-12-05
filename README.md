@@ -1,8 +1,8 @@
-# VRV Security RBAC System
+# Role Based Access Control System
 
 ## Overview
 
-The VRV Security RBAC (Role-Based Access Control) system is designed to manage users, roles, and permissions. It enables the management of authentication and authorization based on user roles like **User**, **Moderator**, and **Admin**.
+The RBAC (Role-Based Access Control) system is designed to manage users, roles, and permissions. It enables the management of authentication and authorization based on user roles like **User**, **Moderator**, and **Admin**.
 
 This project is built using **Node.js**, **Express**, **MongoDB**, and **JWT** for secure user authentication.
 
