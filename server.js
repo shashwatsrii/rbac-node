@@ -84,7 +84,7 @@ app.get('/', (req, res) => {
           </style>
         </head>
         <body>
-          <h1>Welcome to the VRV Security RBAC System!</h1>
+          <h1>Welcome to the RBAC System!</h1>
           <div>${htmlContent}</div>
         </body>
       </html>
